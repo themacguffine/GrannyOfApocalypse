@@ -4,37 +4,46 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private float speed = 3f;
-    [SerializeField] private float jumForce = 10f;
-    [SerializeField] private CheckIsGroundedPlayer checkIsGroundedPlayer;
+    [SerializeField] private float speed;
+    private Animator anim;
+    private Rigidbody2D rb;
+    private bool grounded;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     private void Update()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        Vector2 movement = new Vector2(moveHorizontal, 0);
-        rb.velocity = new Vector2(movement.x * speed, rb.velocity.y);
+        float horizontalInp = Input.GetAxis("Horizontal");
+        rb.velocity = new Vector2(horizontalInp * speed, rb.velocity.y);
 
-        if (movement.x > 0)
+        if (horizontalInp > 0.01)
         {
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
-        else if (movement.x < 0)
+            transform.localScale = new Vector3(10, 10, 1);
+            //anim.SetBool("isWalking", true);
+
+        }        
+        else if (horizontalInp < -0.01)
         {
-            transform.rotation = Quaternion.Euler(0, 180, 0);
+            transform.localScale = new Vector3(-10,10,1);
+            //anim.SetBool("isWalking", true);
+        }
+        else
+        {
+            //anim.SetBool("isWalking", false);
         }
 
-
-
-        if (Input.GetKeyDown(KeyCode.Space) && checkIsGroundedPlayer.isGrounded)
+        if(Input.GetKey(KeyCode.Space))
         {
             Jump();
         }
-
     }
-
     private void Jump()
     {
-        rb.AddForce(Vector2.up * jumForce, ForceMode2D.Impulse);
+        rb.velocity = new Vector2(rb.velocity.x, speed);
+        grounded = false;
     }
+
 }
