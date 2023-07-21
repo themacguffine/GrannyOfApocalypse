@@ -50,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
             }else
             {
                 rb.gravityScale = 7;
-                print("aaaaaaa");
+                
             }
 
             if (Input.GetKey(KeyCode.Space))
@@ -97,6 +97,6 @@ public class PlayerMovement : MonoBehaviour
 
     public bool canAttack()
     {
-        return horizontalInp == 0 && isGrounded() && !onWall();
+        return horizontalInp == 0 && isGrounded() && !onWall(); 
     }
 }

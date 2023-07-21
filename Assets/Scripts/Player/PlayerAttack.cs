@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     [SerializeField] private float attackCoolDown;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private GameObject[] bullets;
     private Animator anim;
     private PlayerMovement playerMovement;
     private float coolDownTimer = Mathf.Infinity;
@@ -17,7 +19,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0) && coolDownTimer > attackCoolDown && playerMovement.canAttack())
+        if(Input.GetMouseButton(0) && coolDownTimer > attackCoolDown && playerMovement.canAttack())
         {
             Attack();
         }
@@ -28,5 +30,21 @@ public class PlayerAttack : MonoBehaviour
     {
         anim.SetTrigger("teethAttack");
         coolDownTimer = 0;
+
+        bullets[FindBullet()].transform.position = firePoint.position;
+        bullets[FindBullet()].GetComponent<TeethBullet>().SetDirection(Mathf.Sign(transform.localScale.x));
+        print(FindBullet());
+    }
+
+    private int FindBullet()
+    {
+        for (int i = 0; i < bullets.Length; i++)
+        {
+            if (!bullets[i].activeInHierarchy)
+            {
+                return i;
+            }
+        }
+        return 0;
     }
 }
