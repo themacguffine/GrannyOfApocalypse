@@ -19,7 +19,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetMouseButton(0) && coolDownTimer > attackCoolDown && playerMovement.canAttack())
+        if(Input.GetMouseButtonDown(0) && coolDownTimer > attackCoolDown && playerMovement.canAttack())
         {
             Attack();
         }
@@ -33,7 +33,6 @@ public class PlayerAttack : MonoBehaviour
 
         bullets[FindBullet()].transform.position = firePoint.position;
         bullets[FindBullet()].GetComponent<TeethBullet>().SetDirection(Mathf.Sign(transform.localScale.x));
-        print(FindBullet());
     }
 
     private int FindBullet()

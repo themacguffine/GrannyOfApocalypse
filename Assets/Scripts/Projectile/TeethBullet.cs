@@ -7,6 +7,7 @@ public class TeethBullet : MonoBehaviour
     [SerializeField] private float speed;
     private bool hit;
     private float direction;
+    private float lifeTime;
 
     private BoxCollider2D boxCollider;
     private Animator anim;
@@ -23,6 +24,9 @@ public class TeethBullet : MonoBehaviour
 
         float movementSpeed = speed * Time.deltaTime * direction;
         transform.Translate(movementSpeed, 0, 0);
+
+        lifeTime += Time.deltaTime;
+        if(lifeTime > 5) gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -30,11 +34,12 @@ public class TeethBullet : MonoBehaviour
         hit = true;
         boxCollider.enabled = false;
         anim.SetTrigger("explode");
-        print("salam");
+        
     }
 
     public void SetDirection(float _direction)
     {
+        lifeTime = 0;
         direction = _direction;
         gameObject.SetActive(true);
         hit = false;
